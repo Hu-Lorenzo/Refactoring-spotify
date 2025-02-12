@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stilr.css') }}">
+
     <title>Brani della Playlist</title>
 </head>
 <body>
@@ -40,6 +42,8 @@
     {% endif %}
 
     <br>
-    <a href="{{ url_for('home') }}">Torna alle Playlist</a>
+    <center>
+    <a href="{{ url_for('home.home') }}">Torna alle Playlist</a>
+</center>
 </body>
 </html>

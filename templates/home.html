@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profilo Utente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stilr.css') }}">
+
+
 </head>
 <body>
     <h1>Benvenuto, {{ user_info['display_name'] }}!</h1>
@@ -37,7 +40,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a href="{{ url_for('playlist', playlist_id=playlist['id']) }}">Visualizza Brani</a>
+                            <a href="{{ url_for('home.playlist', playlist_id=playlist['id']) }}">Visualizza Brani</a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -48,6 +51,8 @@
     {% endif %}
 
     <br>
-    <a href="{{ url_for('logout') }}">Logout</a>
+    <center>
+    <a href="{{ url_for('auth.logout') }}">Logout</a>
+</center>
 </body>
 </html>

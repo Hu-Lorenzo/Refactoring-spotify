@@ -1,16 +1,18 @@
-from flask import Flask, redirect, request, url_for, render_template, session
-from services.spotify_oauth import sp_oauth,get_spotify_object
+from flask import Flask, redirect, request, url_for, render_template, session, Blueprint
+from services.spotify_oauth import sp_oauth, get_spotify_object  
+import spotipy  
+
+home_bp = Blueprint('home', __name__)
+
 @home_bp.route('/home')
 def home():
     token_info = session.get('token_info', None)
     if not token_info:
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login')) 
 
-
-    sp = spotipy.Spotify(auth=token_info['access_token'])
+    sp = get_spotify_object(token_info)  
     user_info = sp.current_user()
     playlists = sp.current_user_playlists()['items']
-
 
     return render_template('home.html', user_info=user_info, playlists=playlists)
 
@@ -19,12 +21,9 @@ def home():
 def playlist(playlist_id):
     token_info = session.get('token_info', None)
     if not token_info:
-        return redirect(url_for('login'))
-
-
-    sp = spotipy.Spotify(auth=token_info['access_token'])
+        return redirect(url_for('auth.login'))  
+    sp = get_spotify_object(token_info) 
     playlist_tracks = sp.playlist_items(playlist_id)
-
 
     tracks = [{
         'name': track['track']['name'],
@@ -33,7 +32,4 @@ def playlist(playlist_id):
         'image': track['track']['album']['images'][0]['url'] if track['track']['album']['images'] else None
     } for track in playlist_tracks['items']]
 
-
     return render_template('playlist.html', tracks=tracks)
-
-
